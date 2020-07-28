@@ -1,20 +1,55 @@
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import Input from '../components/Input';
 import Logo from '../images/new-logo-burger.png'
 import Button from '../components/Button';
 import Password from '../components/Password';
 import Footer from '../components/Footer';
+import firebase from 'firebase';
 import { StyleSheet, css } from 'aphrodite';
 import {Link} from 'react-router-dom'
 //import { queries } from '@testing-library/react';
 const Login = () => {
-  return (
+  
+    const [email,setEmail] = useState('')
+    const [password,setPassword] = useState('')
+
+    const login = (event) => {
+        event.preventDefault();
+        firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+            .then(function(props) {
+                firebase.auth.onAuthStateChanged((user) =>{
+                    if(user) {
+                        const uid = firebase.auth().currentUser.uid;
+                        firebase.firestore().collection('users').doc(uid).get()
+                        .then((doc) =>(doc.data().workplace))
+                        .then((workplace) => {
+                            if (workplace === 'Atendimento') {
+                                props.history.push('./Saloon')
+                            } else {
+                                props.history.push('./Kitchen')
+                            }
+                        })
+                    }
+                })
+           })
+            .catch(function(error) {
+                const errorCode = error.code;
+                const  errorMessage= error.message;
+                console.log(errorCode,errorMessage)
+              });
+     }
+    
+     useEffect(() => {console.log( email, password)}, [ email, password])
+  
+     return (
     <main className={css(styles.main)}>
       <form className={css(styles.form)}>
       <img className={css(styles.img)} src={Logo} alt='burger logo'/>
-        <Input style={css(styles.input)} title='E-mail'/>
-        <Password style={css(styles.input)} title='Senha'/>
-        <Button style={css(styles.button)} children='Login'/>
+        <Input style={css(styles.input)} title='E-mail' onChange={(e) => setEmail(e.target.value)}   />
+        <Password style={css(styles.input)} title='Senha'  onChange={(e) => setPassword(e.target.value)}/>
+        <Button style={css(styles.button)} children='Login' onClick={(e) => {login(); e.preventDefault()}}/>
         <p className={css(styles.p)}> Não possui conta?
         <Link to='/register' className={css(styles.link)}> Registre-se</Link>
         </p>

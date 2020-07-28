@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Input from '../components/Input';
 import Password from '../components/Password';
 import Select from '../components/Select';
@@ -7,20 +7,21 @@ import Paragraph from '../components/Phrase';
 import { Link, useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import firebase from 'firebase';
+
 import { StyleSheet, css } from 'aphrodite';
-//import iziToast from 'izitoast';
 
 const Register = () => {
   const history = useHistory();
   const [user, setUser] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [workplace, setWorkplace] = useState('kitchen');
-  
-  function signUp() {
+  const [workplace, setWorkplace] = useState('');
+
+  const register = (event) => {
     if (!user || !email || !password || !workplace) {
-      alert('preencher')
-  } else {
+      alert('Verifique se todos os campos estão preenchidos');
+    } else {
+        event.preventDefault();
       firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -28,58 +29,53 @@ const Register = () => {
         firebase
         .firestore()
         .collection('users')
-        .doc(firebase.auth().currentUser.uid)
+        .doc(firebase.currentUser.uid)
         .set({
           name: user,
           email: email,
           password: password,
-          userId: firebase.auth().currentUser.uid
+          workplace: workplace,
+          userId: firebase.currentUser.uid
+        })
       })
-    }).then(() => {
-      if (workplace === 'true') {
-        history.push('/kitchen')
-        alert('olar vc ta na cozinha')
-    } else {
-        history.push('/saloon')
-        alert('oi vc ta no salão')
+        .then(() => {
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    firebase
+                    .firestore()
+                    .collection('users')
+                    .doc(firebase.currentUser.uid)
+                    .get()
+                    .then((doc) => (doc.data().workplace))
+                    .then((workplace) => {
+                        if (workplace === 'Garçom'){
+                            history.push('./Saloon')
+                        } else {
+                            history.push('./Kitchen')
+                        }
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code
+                        console.log(errorCode)
+                      });
+                    }
+                })
+            })
+        }
     }
-  })
-  .catch((error) => {
-    const errorCode = error.code
-    if (errorCode ==='auth/email-already-in-use') {
-      alert('conta já existe')
-    } else if (errorCode === 'auth/invalid-email') {
-      alert('email invalido')
-    } else if (errorCode === "auth/weak-password") {
-      alert('senha fraca')
-    } 
-  })
-}
+    //useEffect(() => {console.log(user, email, password, workplace)}, [user, email, password, workplace])
+  
   return (
     <main className={css(styles.main)}>
       <form className={css(styles.form)}>
         <header className={css(styles.header)}>
           <Paragraph children='Registro'/>
         </header>
-        <Input 
-        style={css(styles.input)} 
-        title='Nome Completo' 
-        onChange={(e) => setUser(e.target.value)}
-        />
-        <Input 
-        style={css(styles.input)} 
-        title='E-mail'onChange={(e) => setEmail(e.target.value)}
-        />
-        <Password 
-        style={css(styles.input)} 
-        title='Senha' 
-        onChange={(e) => setPassword(e.target.value)}
-        />
-        <Select 
-        style={css(styles.select)} 
-        onChange={(e) => setWorkplace(e.target.value)}
-        />
-        <Button handleClick={() => signUp()} style={css(styles.button)} children='Criar conta' />
+        <Input style={css(styles.input)} title='Nome Completo' onChange={(e) => setUser(e.target.value)}/>
+        <Input style={css(styles.input)} title='E-mail'onChange={(e) => setEmail(e.target.value)}/>
+        <Password style={css(styles.input)} title='Senha' onChange={(e) => setPassword(e.target.value)}/>
+        <Select style={css(styles.select)} onChange={(e) => setWorkplace(e.target.value)}/>
+        <Button style={css(styles.button)} onClick={(e) => {register(); e.preventDefault()}} children='Criar conta'/>
         <p className={css(styles.p)}>Já possui uma conta?
           <Link to='/' className={css(styles.link)}> Faça o login</Link>
         </p>
@@ -87,15 +83,17 @@ const Register = () => {
       </form>
     </main>
   );
-}
-}
-
+    }
 const styles = StyleSheet.create({
   header: {
     color: '#D97904',
     fontFamily: 'Spectral SC',
     fontWeight: 'bold',
     fontSize: '40px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
     margin: '40px'
   },
   main: {
