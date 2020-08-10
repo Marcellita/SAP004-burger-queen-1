@@ -13,29 +13,8 @@ const Saloon = () => {
   const [customer, setCustomer] = useState('');
   const [table, setTable] = useState('');
   const [order, setOrder] = useState([]);
-  const [total, setTotal] = useState(0);
+  //const [total, setTotal] = useState(0);
 
-  const OptionMenu = () => {
-    firebase
-    .firestore()
-    .collection('menu')
-    .doc('breakfast')
-    .get()
-    .then((snapshot) => {
-      setBreakfast(Object.entries(snapshot.data()))
-    });
-}
-
-  useEffect(() => {
-    OptionMenu()
-  },[]);
-
-  useEffect(()=>console.log(breakfast),[breakfast])
-
-  const allBurguer = (e) => {
-    setMenu(e.target.value);
-    OptionMenu({ name:'burgers', state: setBurgers})
-  }
 
   const addOrder = () => {
     !customer || !table ?
@@ -51,7 +30,8 @@ const Saloon = () => {
       .collection('orders')
       .add({
         customer,
-        table
+        table,
+        order
       }).then(
         Swal.fire({
           title: 'Pedido enviado com sucesso',
@@ -61,7 +41,6 @@ const Saloon = () => {
         })
       );
   }
-  
   const OptionMenu = () => {
     firebase
     .firestore()
@@ -71,6 +50,7 @@ const Saloon = () => {
     .then((snapshot) => {
       setBreakfast(Object.entries(snapshot.data()))
     });
+
 }
 const OptionBurger = () => {
   firebase
@@ -82,7 +62,11 @@ const OptionBurger = () => {
     setBreakfast(Object.entries(snapshot.data()))
   });
 }
-  console.log(order)
+const deleteItem = (e, key) => {
+  e.preventDefault()
+  const removed = order.splice(key,[1])
+  setOrder([...removed])
+}
 
   return (
     <main className={css(styles.main)}>
@@ -92,8 +76,8 @@ const OptionBurger = () => {
         <Button style={css(styles.button)} onClick={(e) => OptionBurger(e.target.value)} children='Lanches'/>
       </div>
       <div className={css(styles.menu)}>
-        {breakfast.map((el, index) => <MenuButton  onClick={()=>SetOrder([...order,el[0],el[1]])} className={css(styles.button)} el={el} index={index}/>)}
-        {burger.map((el, index) => <MenuButton className={css(styles.button)} el={el} index={index}/>)}
+        {breakfast.map((el, index) => <MenuButton  onClick={()=>setOrder([...order,el[0],el[1]])} className={css(styles.button)} el={el} index={index}/>)}
+        {burger.map((el, index) => <MenuButton onClick={()=>setOrder([...order,el[0],el[1]])} className={css(styles.button)} el={el} index={index}/>)}
       </div>
       <div className={css(styles.containerOrder)}>
         <p className={css(styles.p)}>Resumo do pedido</p>
@@ -103,10 +87,19 @@ const OptionBurger = () => {
         </div>
           <>
             <div className={css(styles.order)}> Qtd:
-              <Button style={css(styles.delete)} children='🗑️'/>
-              {order.map((el)=><p> {el} </p>)}
-              <button >❌</button>
-            </div>
+            {order.map((el,index)=> (
+                  <div>
+                    <div key={index}>
+                  <p>{el}</p>
+                  <p>R${el},00</p>
+                     </div>
+                  <div>
+                  <Button onClick = {(e)=>deleteItem(e,index)} style={css(styles.delete)} children='X'/>
+                  </div>
+                </div>
+              )
+            )}
+              </div>
           </>
           <div className={css(styles.position)}>
             <p className={css(styles.p)}>Total: R$,00</p>
@@ -166,7 +159,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     borderRadius: '10px',
-    marginLeft: '30%',
+    marginLeft: '40%',
     alignItems: 'center',
   },
   p: {
@@ -207,6 +200,7 @@ const styles = StyleSheet.create({
     margin: '25px',
     outline: 'none'
   }
+}
 });
 
 export default Saloon;
