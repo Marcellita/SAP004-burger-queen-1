@@ -35,9 +35,9 @@ const Saloon = () => {
     });
 }
 
-  useEffect(() => {
-    optionBreakfast()
-  },[]);
+  //useEffect(() => {
+  //  optionBreakfast()
+  //},[]);
 
   const addOrder = () => {
     !customer || !table || !order ?
@@ -64,11 +64,12 @@ const Saloon = () => {
         })
       );
   }
-    // const deleteItem = (e, key) => {
-    //   e.preventDefault()
-    //   const removed = order.splice(key,[1])
-    //   setOrder([...removed]);
-    // };
+  const deleteItem = (e, key) => {
+    e.preventDefault()
+    const removed = order.splice(key,[1])
+    setOrder([...removed])
+  }
+  
   // const decrease = item => {
   //   if (item.counter === 1) {
   //     deleteItem(item);
@@ -118,13 +119,14 @@ const Saloon = () => {
           <div className={css(styles.order)}> Qtd:
                 
               <div> 
-              {order.map((el, index)=> (
+              {order.map((el,index)=> (
                 <>
-                  <p key={index}>merda</p>
-                  <Button style={css(styles.delete)} children='🗑️'/>
+                  <p key={index}>{el.item},R${el.price},00</p>
+                  <Button onClick={deleteItem} style={css(styles.delete)} children='X'/>
                 </>
               )
-              )}
+             )}
+    
 
                 {/* AUMENTAR E DIMINUIR ITENS <p>R${el},00</p> 
                     <Button children={'-'} onClick={() => decrease(el)}/>
