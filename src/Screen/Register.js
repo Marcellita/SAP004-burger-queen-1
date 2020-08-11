@@ -128,12 +128,7 @@ const styles = StyleSheet.create({
     fontSize: '14px',
     background: '#F2F2F2',
     borderStyle: 'none',
-    outline: 'none'
-    //"@media (min-width: 360px)": {
-    //    width: "250px",
-    //    height: "30px",
-    //    fontSize: '24px',
-    //  }
+    outline: 'none',
   },
   select: {
     color: '#686869',
@@ -145,11 +140,6 @@ const styles = StyleSheet.create({
     fontSize: '14px',
     borderStyle: 'none',
     outline: 'none'
-    //"@media (max-width: 360px)": {
-    //    width: "230px",
-    //    height: "50px",
-    //    fontSize: '24px',
-    //  }
   },
   button: {
     background: '#D97904',
@@ -162,12 +152,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Spectral SC',
     borderStyle: 'none',
     cursor: 'pointer',
-    outline: 'none'
-    //"@media (max-width: 360px)": {
-    //    width: "150px",
-    //    height: "50px",
-    //    fontSize: '24px',
-    //  }
+    outline: 'none',
   },
   form: {
     fontSize: '18px',
@@ -182,11 +167,6 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontSize: '15px',
     color: '#F2F2F2',
-    //"@media (min-width: 360px)": {
-    //    fontSize: '24px',
-    //    color: '#F2F2F2',
-    //     transition: '0.2s linear',
-    //  }
   },
   link: {
     fontFamily: 'Spectral SC',
@@ -199,15 +179,6 @@ const styles = StyleSheet.create({
       color: '#D97904',
       cursor: 'pointer',
     },
-    //"@media (min-width:360px)": {
-    //    fontSize: '24px',
-    //    color: '#F2F2F2',
-    //     transition: '0.2s linear',
-    //     ':hover': {
-    //        color: '#D97904',
-    //        cursor: 'pointer'
-    //      },
-
   },
   footer: {
     fontFamily: 'Spectral SC',

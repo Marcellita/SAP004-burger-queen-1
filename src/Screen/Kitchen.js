@@ -4,23 +4,36 @@ import Nav from '../components/Navbar';
 //import Card from '../components/Card';
 import {StyleSheet,css} from 'aphrodite'
 const Kitchen = () => {
+  const [order, setOrder] = useState([]);
+  //const orderKitchen =() =>{
+  //  firebase
+  //  .firestore()
+  //  .collection('orders')
+  //  .get()
+  //  .then((snapshot) => {
+  //    const name = snapshot.data().customer
+  //    //const table = snapshot.data().table
+  //    console.log(name)
+  //  })
+  //  console.log(orderKitchen)
+  //}
 
-  const orderKitchen =() =>{
-    console.log('funcinou?')
-    firebase.firestore().collection('orders').get()
-    .then((snapshot) => {
-      const customer = snapshot.data().id
-      const table = snapshot.data().table
-      console.log(customer,table)
+  const orderKitchen = () => {
+    firebase
+    .firestore()
+    .collection('orders')
+    .orderBy('id')
+    .onSnapshot((snap)=>{
+      const name = snap.data().customer
+      console.log(name)
     })
-    console.log('funcinou?')
-  }
-
+}
+//console.log(orderKitchen)
   return (
     <main className={css(styles.main)}>
       <Nav/>
-      <div className={css(styles.tite)}>
-      <h1 >Cozinha</h1>
+      <div className={css(styles.title)}>
+      <p className={css(styles.p)}>Cozinha</p>
       </div>
       {/*<div>
         {orders.map((ord)=>{
@@ -47,6 +60,14 @@ const styles = StyleSheet.create({
     color: '#ccc',
     fontSize: '36px',
     fontFamily: 'Roboto'
-  }
+  },
+  p: {
+  fontFamily: 'Spectral SC',
+  fontWeight: 'normal',
+  fontSize: '30px',
+  color: '#F2F2F2',
+  //"@media (min-width: 360px)": {
+  //    fontSize: '24px
+}
 })
 export default Kitchen;

@@ -35,10 +35,6 @@ const Saloon = () => {
     });
 }
 
-  //useEffect(() => {
-  //  optionBreakfast()
-  //},[]);
-
   const addOrder = () => {
     !customer || !table || !order ?
       Swal.fire({
@@ -70,23 +66,7 @@ const Saloon = () => {
       setOrder([...order]);
 
     };
-  // const decrease = item => {
-  //   if (item.counter === 1) {
-  //     deleteItem(item);
-  //   } else {
-  //     item.counter--;
-  //     setMenu([...setMenu]);
-  //   }
-  // }
-  //   const increase = item => {
-  //   if (!menu.includes (item)) {
-  //     item.counter = 1;
-  //     setMenu([...menu, item]);
-  //   } else {
-  //     item.counter += 1;
-  //     setMenu([...menu]);
-  //   }
-  // }
+ 
 
   return (
     <main className={css(styles.main)}>
@@ -116,11 +96,7 @@ const Saloon = () => {
               )
               )}
 
-                {/* AUMENTAR E DIMINUIR ITENS <p>R${el},00</p> 
-                    <Button children={'-'} onClick={() => decrease(el)}/>
-                    {el.counter}
-                    <Button children={'+'} onClick={() => increase(el)}/>
-                    <Button style={css(styles.delete)} onClick={e => {e.preventDefault();deleteItem(el);}}children='🗑️'/> */}
+               
                     
               </div>
           </div>
@@ -170,7 +146,7 @@ const styles = StyleSheet.create({
     color: '#0D0D0D',
     fontSize: '24px',
     borderStyle: 'none',
-    cursor: 'pointer',
+    cursor: 'pointer', 
     outline: 'none',
     ':active': {
     background: '#D97904',
