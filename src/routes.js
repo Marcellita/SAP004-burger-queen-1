@@ -6,8 +6,6 @@ import Register from './screen/Register';
 import Kitchen from './screen/Kitchen';
 import Saloon from './screen/Saloon';
 import Delivery from './screen/Delivery'
-//import Notfound from './screen/NotFound'
-//import PrivateRoute from './private'
 import './index.css'
 const Routes = () => {
   return (
@@ -17,7 +15,6 @@ const Routes = () => {
       <Route exact path='/kitchen' component={Kitchen}/>
       <Route exact path='/saloon' component={Saloon}/>
       <Delivery exact path ='/delivery' component={Delivery}/>
-      {/*<Route component={Notfound}/>*/}
     </Switch>
   );
 }
