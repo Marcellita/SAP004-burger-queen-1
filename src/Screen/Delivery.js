@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import firebase from '../firebase';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import Nav from '../components/Navbar';
 import CardKitchen from '../components/Card';
 import Button from '../components/Button';
@@ -35,7 +35,7 @@ const Kitchen = () => {
       status: 'Pronto'
     })
     setCustomer(customer.filter(item => item.id !== doc.id))
-  };
+  }
 
   return (
     <main className={css(styles.main)}>
@@ -79,19 +79,15 @@ const styles = StyleSheet.create({
     fontFamily: 'Spectral SC',
     color: '#ccc',
     fontSize: '36px',
-    
     padding: '30px'
   },
   nav: {
     background: '#0D0D0D',
-    margin: '20px',
+    margin: '20px'
   },
   li: {
     listStyle: 'none',
-    display:'inline',
-    fontSize: '23px',
-    display: 'flex',
-    justifyContent: 'flex-end'
+    fontSize: '23px'
   },
   link: {
     textDecoration: 'none',
@@ -110,7 +106,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     padding: '10px',
     borderRadius: '5px',
-    width: '20%'
+    width: '20%',
+    display: 'inline-flex'
   },
   ready: {
     background: '#227036',
@@ -122,7 +119,7 @@ const styles = StyleSheet.create({
     cursor: 'pointer',
     margin: '25px',
     padding: '5px',
-    outline: 'none',
+    outline: 'none'
   }
 });
 

@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "app-burger-queen",
     "public": "(build)",
     "ignore": [
       "firebase.json",
